@@ -1,0 +1,6 @@
+FROM golang:alpine
+RUN mkdir /news
+ADD . /news/
+WORKDIR /news/
+RUN go build -o news .
+CMD ["./news"]

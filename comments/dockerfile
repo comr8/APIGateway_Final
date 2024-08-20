@@ -1,0 +1,6 @@
+FROM golang:alpine
+RUN mkdir /comments
+ADD . /comments/
+WORKDIR /comments/
+RUN go build -o comments .
+CMD ["./comments"]

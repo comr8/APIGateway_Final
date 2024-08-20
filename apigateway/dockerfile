@@ -1,0 +1,9 @@
+FROM golang:alpine
+RUN mkdir /APIgateway
+WORKDIR /APIgateway/
+COPY . .
+RUN go build -o APIgateway .
+CMD ["./APIgateway"]
+
+
+

@@ -1,0 +1,7 @@
+{
+    "rss": [
+       "https://habr.com/ru/rss/articles/?fl=ru",
+       "https://habr.com/ru/rss/best/daily/?fl=ru"
+    ],
+    "request_period": 5
+ }

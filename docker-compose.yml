@@ -1,0 +1,71 @@
+version: '3.3'
+
+services:
+  comments-db:
+    image: postgres:10.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: comments
+    ports:
+      - "5433:5432" 
+
+  news-db:
+    image: postgres:10.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: news
+    ports:
+      - "5434:5432"
+
+  apigateway:
+    build: apigateway/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    network_mode: "host"
+    environment:
+      - VERIFICATION_SERVICE_URL=http://localhost:8081
+      - COMMENT_SERVICE_URL=http://localhost:8082
+      - NEWS_SERVICE_URL=http://localhost:8083
+      - API_PORT=8080
+
+  comments:
+    build: comments/
+    depends_on:
+      - comments-db
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    network_mode: "host"
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=5433
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=comments
+      - API_PORT=8082
+
+  news:
+    build: news/
+    depends_on:
+      - news-db
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    network_mode: "host"
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=5434
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=news
+      - API_PORT=8083
+    
+    
+
+  verification:
+    build: verification/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    network_mode: "host"
+    environment:
+      - API_PORT=8081

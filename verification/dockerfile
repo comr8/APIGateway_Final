@@ -1,0 +1,6 @@
+FROM golang:alpine
+RUN mkdir /verification
+ADD . /verification/
+WORKDIR /verification/
+RUN go build -o verification .
+CMD ["./verification"]
