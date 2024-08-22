@@ -20,7 +20,6 @@ func main() {
 	port := os.Getenv("API_PORT")
 
 	router.POST("/create-comment", func(c *gin.Context) {
-
 		var request types.Request
 		request.UniqueID = xid.New().String()
 		if err := c.BindJSON(&request); err != nil {
@@ -208,6 +207,9 @@ func main() {
 		log.Printf("Timestamp: %s, Request ID: %s, IP: %s, HTTP Code: %d", time.Now().Format("2006-01-02 15:04:05"), uniqueID, c.ClientIP(), http.StatusOK)
 	})
 
-	router.Run(":" + port)
+	err := router.Run(":" + port)
+	if err != nil {
+		return
+	}
 
 }
